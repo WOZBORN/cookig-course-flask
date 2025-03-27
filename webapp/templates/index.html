@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courseborn – Главная</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      padding-top: 70px;
+    }
+    .hero {
+      background: url("../static/images/hero.jpg") no-repeat center center;
+      background-size: cover;
+      color: #fff;
+      padding: 100px 0;
+      text-align: center;
+    }
+    .review {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Навигация -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">COURSEBORN</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a class="nav-link" href="{{ url_for('main.index') }}">Главная</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.courses') }}">Курсы</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Баннер -->
+  <section class="hero">
+    <div class="container">
+      <h1>Онлайн-курсы программирования</h1>
+      <p>Изучай Python, веб-разработку, игры и ботов — от нуля до продвинутого уровня!</p>
+    </div>
+  </section>
+
+  <!-- Основной контент -->
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Описание школы и контакты -->
+      <div class="col-md-6">
+        <h2>О нашей школе</h2>
+        <p>
+          Мы обучаем программированию по авторским методикам. На наших курсах ты научишься писать код, делать сайты,
+          игры и телеграм-ботов. Упор на практику, поддержку и реальный результат.
+        </p>
+        <h3>Контакты</h3>
+        <p>Email: info@courseborn.ru</p>
+        <p>Телефон: +7 999 123 4567</p>
+      </div>
+      <!-- Форма записи -->
+      <div class="col-md-6">
+        <h2>Записаться на курс</h2>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.fullname.label(class="form-label") }}
+            {{ form.fullname(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.phone.label(class="form-label") }}
+            {{ form.phone(class="form-control") }}
+          </div>
+          <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Раздел с отзывами -->
+    <div class="mt-5">
+      <h2>Отзывы студентов</h2>
+      {% for review in reviews %}
+      <div class="card review">
+        <div class="card-body">
+          <h5 class="card-title">{{ review.author }}</h5>
+          <p class="card-text">{{ review.content }}</p>
+          {% if review.rating %}
+          <p>Оценка: {{ review.rating }}/5</p>
+          {% endif %}
+          <p class="text-muted"><small>{{ review.timestamp.strftime('%d.%m.%Y %H:%M') }}</small></p>
+        </div>
+      </div>
+      {% else %}
+      <p>Пока нет отзывов. Будь первым!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Скрипты Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
