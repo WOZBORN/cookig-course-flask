@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+{% load static %}
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,37 +27,50 @@
 <body>
   <!-- Навигация -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <a class="navbar-brand" href="{{ url_for('main.index') }}">COURSEBORN</a>
+    <a class="navbar-brand" href="{% url 'index' %}">COURSEBORN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Главная</a></li>
-        <li class="nav-item active"><a class="nav-link" href="{{ url_for('main.courses') }}">Курсы</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Главная</a></li>
+        <li class="nav-item active"><a class="nav-link" href="{% url 'courses' %}">Курсы</a></li>
       </ul>
     </div>
   </nav>
 
+    <!-- Сообщения -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
   <!-- Список курсов -->
   <div class="container mt-5">
     <h1 class="mb-4">Курсы программирования</h1>
     <div class="row">
-      {% for course in courses %}
-      <div class="col-md-4">
-        <div class="card course-card">
-          <div class="card-body">
-            <h5 class="card-title">{{ course.name }}</h5>
-            <p class="card-text">{{ course.description }}</p>
-            <a href="{{ url_for('main.course_detail', course_id=course.id) }}" class="btn btn-primary">Перейти к курсу</a>
+      {% if courses %}
+        {% for course in courses %}
+        <div class="col-md-4">
+          <div class="card course-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ course.name }}</h5>
+              <p class="card-text">{{ course.description }}</p>
+              <a href="{% url 'course_detail' course_id=course.id %}" class="btn btn-primary">Перейти к курсу</a>
+            </div>
           </div>
         </div>
-      </div>
+        {% endfor %}
       {% else %}
-      <div class="col-12">
-        <p>Пока нет доступных курсов.</p>
-      </div>
-      {% endfor %}
+        <div class="col-12">
+          <p>Пока нет доступных курсов.</p>
+        </div>
+      {% endif %}
     </div>
   </div>
 

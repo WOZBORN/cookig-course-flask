@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -34,18 +35,29 @@
 <body>
   <!-- Навигация -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <a class="navbar-brand" href="{{ url_for('main.index') }}">COURSEBORN</a>
+    <a class="navbar-brand" href="{% url 'index' %}">COURSEBORN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Главная</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.courses') }}">Курсы</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Главная</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'courses' %}">Курсы</a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Сообщения -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
   <!-- Страница курса -->
   <div class="container mt-5">
     <h1 class="mb-4">{{ course.name }}</h1>
@@ -67,7 +79,7 @@
         <h4>Уроки</h4>
         <div class="list-group playlist">
           {% for lesson in lessons %}
-          <a href="{{ url_for('main.course_detail', course_id=course.id, lesson_id=lesson.id) }}" class="list-group-item list-group-item-action {% if lesson.id == current_lesson.id %}active{% endif %}">
+            <a href="{% url 'lesson_detail' course_id=course.id lesson_id=lesson.id %}" class="list-group-item list-group-item-action {% if lesson.id == current_lesson.id %}active{% endif %}">
             {{ lesson.order }}. {{ lesson.title }}
           </a>
           {% endfor %}

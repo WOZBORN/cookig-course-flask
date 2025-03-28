@@ -3,9 +3,7 @@ venv/
 
 .idea/
 .vscode/
+
 __pycache__/
-*~
-instance/
-*.pyc
-.env
-.vscode/
+
+migrations/
